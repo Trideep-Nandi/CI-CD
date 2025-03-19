@@ -10,7 +10,7 @@ postgresconfig:
   storage:
 
 nodejsconfig:
-  image:
+  image: trideepnandi/tuts:13950377292
   replicas:
   port: 3000
   labels:
