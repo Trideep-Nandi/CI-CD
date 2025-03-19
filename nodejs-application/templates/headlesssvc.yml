@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-postgres-svc
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "helm-tutorial.labels" . | nindent 4 }}
+spec:
+  clusterIP: None
+  selector:
+    {{- include "helm-tutorial.labels" . | nindent 4}}
+    {{- toYaml .Values.postgresconfig.labels | nindent 4}}
+  ports:
+    - protocol: TCP
+      port: {{ .Values.postgresconfig.port }}
+      targetPort: {{ .Values.postgresconfig.port }}

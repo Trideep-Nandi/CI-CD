@@ -1,0 +1,32 @@
+postgresconfig:
+  image: postgres:17.4
+  user:
+  labels:
+    app: database
+  db:
+  password:
+  port: 5432
+  replicas:
+  storage:
+
+nodejsconfig:
+  image:
+  replicas:
+  port: 3000
+  labels:
+    app: backend
+  env:
+    POSTGRES_HOST: "{{ .Release.Name }}-postgres-svc.{{ .Release.Namespace }}.svc.cluster.local"
+    POSTGRES_DB: "{{ .Values.postgresconfig.db }}"
+    POSTGRES_USER: "{{ .Values.postgresconfig.user }}"
+    POSTGRES_PASSWORD: "{{ .Values.postgresconfig.password }}"
+  resources:
+    limits:
+      memory: "256Mi"
+      cpu: "500m"
+    requests:
+      memory: "128Mi"
+      cpu: "250m"
+
+ingress:
+  host: test.local

@@ -1,0 +1,57 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-nodejs-application
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "helm-tutorial.labels" . | nindent 4 }}
+    {{- if .Values.nodejsconfig.labels }}
+    {{- toYaml .Values.nodejsconfig.labels | nindent 4 }}
+    {{- end }}
+spec:
+  replicas: {{ .Values.nodejsconfig.replicas }}
+  selector:
+    matchLabels:
+      {{- include "helm-tutorial.labels" . | nindent 6 }}
+      {{- if .Values.nodejsconfig.labels }}
+      {{- toYaml .Values.nodejsconfig.labels | nindent 6 }}
+      {{- end }}
+  template:
+    metadata:
+      labels:
+        {{- include "helm-tutorial.labels" . | nindent 8 }}
+        {{- if .Values.nodejsconfig.labels }}
+        {{- toYaml .Values.nodejsconfig.labels | nindent 8 }}
+        {{- end }}
+    spec:
+      containers:
+        - name: {{ .Release.Name }}-nodejs
+          image: {{ .Values.nodejsconfig.image }}
+          resources:
+            {{- toYaml .Values.nodejsconfig.resources | nindent 12 }}
+          env:
+            - name: PORT
+              value: "{{ .Values.nodejsconfig.port }}"
+            - name: HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-postgres-cm
+                  key: POSTGRES_HOST
+            - name: DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-postgres-cm
+                  key: POSTGRES_DB
+            - name: DATABASE_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-postgres-cm
+                  key: POSTGRES_USER
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-postgres-secret
+                  key: POSTGRES_PASSWORD
+          ports:
+            - containerPort: {{ .Values.nodejsconfig.port }}

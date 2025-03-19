@@ -1,0 +1,44 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-postgres-sts
+  labels:
+    {{- include "helm-tutorial.labels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  serviceName: {{ .Release.Name }}-postgres-svc
+  replicas: {{ .Values.postgresconfig.replicas }}
+  selector:
+    matchLabels:
+      {{- include "helm-tutorial.labels" . | nindent 6 }}
+      {{- toYaml .Values.postgresconfig.labels | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "helm-tutorial.labels" . | nindent 8 }}
+        {{- toYaml .Values.postgresconfig.labels | nindent 8 }}
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: {{ .Release.Name }}-postgres
+          image: {{ .Values.postgresconfig.image }}
+          envFrom:
+            - secretRef:
+                name: {{ .Release.Name }}-postgres-secret
+            - configMapRef:
+                name: {{ .Release.Name }}-postgres-cm
+          ports:
+            - containerPort: {{ .Values.postgresconfig.port }}
+          volumeMounts:
+            - name: {{ .Release.Name }}-postgres-data
+              mountPath: /var/lib/postgres/data
+  volumeClaimTemplates:
+    - metadata:
+        name: {{ .Release.Name }}-postgres-data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: standard
+        resources:
+          requests:
+            storage: {{ .Values.postgresconfig.storage }}

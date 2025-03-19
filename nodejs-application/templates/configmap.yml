@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-postgres-cm
+  labels:
+    {{- include "helm-tutorial.labels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace }}
+data:
+  POSTGRES_USER: {{ .Values.postgresconfig.user | quote }}
+  POSTGRES_DB: {{ .Values.postgresconfig.db | quote }}
+  POSTGRES_HOST: {{ printf "%s-postgres-svc.%s.svc.cluster.local" .Release.Name .Release.Namespace | quote }}
