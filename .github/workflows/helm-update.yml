@@ -1,0 +1,36 @@
+name: Update the chart with the latest docker Image tag
+
+on:
+  push:
+    branches:
+      - main
+      - 'feat/*'
+
+jobs:
+  update-helm-chart:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Helm Repository
+        uses: actions/checkout@v4
+
+      - name: Set Docker Image Tag
+        run: |
+          echo "IMAGE_TAG=${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.DOCKERHUB_REPO }}:${{ github.run_id }}" >> $GITHUB_ENV
+
+      - name: Update the helm chart with the latest tag
+        run: |
+          ls -Rl
+          sed -i "/nodejsconfig:/,/image:/s|image:|image: ${IMAGE_TAG}|" ./nodejs-application/values.yaml
+          grep -A 1 "nodejsconfig:" nodejs-application/values.yaml
+
+      - name: Commit and push Changes
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@github.com"
+          git add nodejs-application/values.yaml
+          git commit -m "Update Docker image ${IMAGE_TAG} tag in values.yml"
+          git push origin HEAD:main
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
