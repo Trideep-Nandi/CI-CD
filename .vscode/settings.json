@@ -1,0 +1,49 @@
+{
+  "yaml.schemas": {
+    "Kubernetes": ["*.yaml", "*.yml"]
+  },
+  "workbench.iconTheme": "vscode-great-icons",
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.tabSize": 2,
+  "[yaml]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.autoIndent": "keep",
+    "editor.wordBasedSuggestions": "off"
+  },
+  "yaml.format.enable": true,
+  "yaml.format.singleQuote": false,
+  "yaml.format.bracketSpacing": true,
+  "yaml.format.proseWrap": "preserve",
+  "yaml.format.printWidth": 80,
+  "yaml.validate": true,
+  "yaml.hover": true,
+  "yaml.completion": true,
+  "yaml.disableAdditionalProperties": true,
+  "yaml.maxItemsComputed": 5000,
+  "yaml.trace.server": "off",
+  "diffEditor.ignoreTrimWhitespace": false,
+  "vs-kubernetes": {
+    "vs-kubernetes.crd-code-completion": "enabled",
+    "vs-kubernetes.namespace": "",
+    "vs-kubernetes.kubectl-path": "",
+    "vs-kubernetes.helm-path": "",
+    "vs-kubernetes.kubectlVersioning": "user-provided",
+    "vs-kubernetes.outputFormat": "yaml",
+    "vs-kubernetes.kubeconfig": "",
+    "vs-kubernetes.knownKubeconfigs": [],
+    "vs-kubernetes.autoCleanupOnDebugTerminate": false,
+    "vs-kubernetes.nodejs-autodetect-remote-root": true,
+    "vs-kubernetes.nodejs-remote-root": "",
+    "vs-kubernetes.nodejs-debug-port": 9229,
+    "vs-kubernetes.dotnet-vsdbg-path": "~/vsdbg/vsdbg",
+    "vs-kubernetes.local-tunnel-debug-provider": "",
+    "imageBuildTool": "Docker"
+  },
+  "redhat.telemetry.enabled": false,
+  "files.autoSaveWhenNoErrors": true,
+  "files.autoSaveWorkspaceFilesOnly": true,
+  "files.autoSave": "onFocusChange",
+  "files.autoSaveDelay": 0
+}
