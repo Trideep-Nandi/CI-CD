@@ -6,6 +6,9 @@ on:
       - main
       - 'feat/*'
 
+permissions:
+  contents: write
+
 jobs:
   update-helm-chart:
     runs-on: ubuntu-latest
@@ -31,6 +34,3 @@ jobs:
           git add nodejs-application/values.yaml
           git commit -m "Update Docker image ${IMAGE_TAG} tag in values.yml"
           git push origin HEAD:main
-
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
