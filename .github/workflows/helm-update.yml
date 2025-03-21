@@ -5,7 +5,9 @@ on:
     branches:
       - main
       - 'feat/*'
-
+  pull_request:
+    branches:
+      - main
 permissions:
   contents: write
 
