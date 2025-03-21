@@ -26,7 +26,7 @@ jobs:
       - name: Update the helm chart with the latest tag
         run: |
           ls -Rl
-          sed -i "/nodejsconfig:/,/image:/s|image:|image: ${IMAGE_TAG}|" ./nodejs-application/values.yaml
+          sed -i "/nodejsconfig:/,/image:/s|image:.*|image: ${IMAGE_TAG}|" ./nodejs-application/values.yaml
           grep -A 1 "nodejsconfig:" nodejs-application/values.yaml
 
       - name: Commit and push Changes
