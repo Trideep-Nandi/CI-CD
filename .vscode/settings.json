@@ -45,5 +45,6 @@
   "files.autoSaveWhenNoErrors": true,
   "files.autoSaveWorkspaceFilesOnly": true,
   "files.autoSave": "onFocusChange",
-  "files.autoSaveDelay": 0
+  "files.autoSaveDelay": 0,
+  "files.insertFinalNewline": false
 }

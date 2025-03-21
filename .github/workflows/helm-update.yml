@@ -19,7 +19,7 @@ jobs:
 
       - name: Set Docker Image Tag
         run: |
-          echo "IMAGE_TAG=${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.DOCKERHUB_REPO }}:${{ github.run_id }}" >> $GITHUB_ENV
+          echo "IMAGE_TAG=${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.DOCKERHUB_REPO }}:${GITHUB_REF#refs/heads/}-${{ github.run_id }}" >> $GITHUB_ENV
 
       - name: Update the helm chart with the latest tag
         run: |
@@ -33,4 +33,4 @@ jobs:
           git config --local user.email "github-actions[bot]@github.com"
           git add nodejs-application/values.yaml
           git commit -m "Update Docker image ${IMAGE_TAG} tag in values.yml"
-          git push origin HEAD:main
+          git push origin ${GITHUB_REF#refs/heads/}
